@@ -52,12 +52,12 @@ spec:
     spec:
       containers:
       - name: ia-etcd-ui
-        image: {{ .Values.registry }}ia_etcd_ui:{{ .Values.eii_version }}
+        image: {{ .Values.DOCKER_REGISTRY }}ia_etcd_ui:{{ .Values.EII_VERSION }}
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         volumeMounts:
         - name: tmp-ssl
           mountPath: "/opt/nginx"
-        {{ if eq .Values.env.dev_mode false}}
+        {{ if eq .Values.env.DEV_MODE false}}
         - name: etcd-certs
           mountPath: /run/secrets/etcd/
         {{ end }}
@@ -65,7 +65,7 @@ spec:
         - name: AppName
           value: "EtcdUI"
         - name: DEV_MODE
-          value: '{{ .Values.env.dev_mode }}'
+          value: '{{ .Values.env.DEV_MODE }}'
         - name: NGINX_PORT
           value: "{{ .Values.config.etcd_ui.int_port }}"
         - name: ETCD_HOST
@@ -80,7 +80,7 @@ spec:
           value: '{{ .Values.config.etcd.name }}:{{ .Values.config.etcd.client_port }}'
         - name: ETCD_USER
           value: "root"
-        {{ if eq .Values.env.dev_mode false}}
+        {{ if eq .Values.env.DEV_MODE false}}
         - name: CONFIGMGR_CACERT
           value: "/run/secrets/etcd/ca_certificate.pem"
         - name: CONFIGMGR_CERT
@@ -92,7 +92,7 @@ spec:
       - name: tmp-ssl
         emptyDir:
           medium: Memory
-      {{ if eq .Values.env.dev_mode false}}
+      {{ if eq .Values.env.DEV_MODE false}}
       - name: etcd-certs
         secret:
           secretName: eii-certs
