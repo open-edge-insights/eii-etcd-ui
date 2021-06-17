@@ -19,10 +19,9 @@
 # SOFTWARE.
 
 ARG EII_VERSION
-ARG DOCKER_REGISTRY
 ARG UBUNTU_IMAGE_VERSION
-FROM ${DOCKER_REGISTRY}ia_eiibase:$EII_VERSION as base
-FROM ${DOCKER_REGISTRY}ia_common:$EII_VERSION as common
+FROM ia_eiibase:$EII_VERSION as base
+FROM ia_common:$EII_VERSION as common
 
 FROM base as builder
 LABEL description="EtcdUI image"
