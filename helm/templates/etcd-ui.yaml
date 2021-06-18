@@ -52,7 +52,7 @@ spec:
     spec:
       containers:
       - name: ia-etcd-ui
-        image: {{ .Values.DOCKER_REGISTRY }}ia_etcd_ui:{{ .Values.EII_VERSION }}
+        image: {{ .Values.DOCKER_REGISTRY }}openedgeinsights/ia_etcd_ui:{{ .Values.EII_VERSION }}
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         volumeMounts:
         - name: tmp-ssl
