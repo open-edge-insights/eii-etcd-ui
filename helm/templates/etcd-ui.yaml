@@ -50,6 +50,10 @@ spec:
       labels:
         app: etcd-ui
     spec:
+      {{- if and .Values.DOCKER_USERNAME .Values.DOCKER_PASSWORD }}
+      imagePullSecrets:
+      - name: registryauth
+      {{- end }}
       containers:
       - name: ia-etcd-ui
         image: {{ .Values.DOCKER_REGISTRY }}openedgeinsights/ia_etcd_ui:{{ .Values.EII_VERSION }}
