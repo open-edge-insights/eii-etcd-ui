@@ -9,19 +9,24 @@
 
 ---
 **NOTE**:
-1. If ETCD_ROOT_PASSWORD is changed, EII must to be provisioned again. Please follow below command in < EII Repo >/build/provision folder to reprovision.
+1. If ETCD_ROOT_PASSWORD is changed, EII must to be provisioned again.
+   Please follow below command:
 
-        ```
-        $ sudo ./provision.sh <path_to_eii_docker_compose_file>
+    ```sh
+    $ cd [WORKDIR]/IEdgeInsights/build/provision
+    $ sudo -E ./provision.sh <path_to_eii_docker_compose_file>
 
-        eq. $ sudo ./provision.sh ../docker-compose.yml
-
-        ```
-2. Only VideoIngestion and VideoAnalytics based services will have watch for any changes. Any changes done to those keys will be reflected at runtime in EII.
-3. For changes done to any other keys, EII stack needs to be restarted for it to take effect. Please execute below command in working directory build/ to restart EII.
+    $ # eq. $ sudo -E ./provision.sh ../docker-compose.yml
     ```
-    $ docker-compose down
+
+2. Only VideoIngestion and VideoAnalytics based services will have watch for any changes. Any changes done to those
+   keys will be reflected at runtime in EII.
+3. For changes done to any other keys, EII stack needs to be restarted for it to take effect. Please execute below
+   command in working directory build/ to restart EII.
+
+    ```sh
+    $ cd [WORKDIR]/IEdgeInsights/build
+    $ docker-compose -f docker-compose-build.yml ia_etcd_ui
     $ docker-compose up
-    
     ```
 ---
