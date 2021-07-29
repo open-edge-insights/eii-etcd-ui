@@ -6,7 +6,7 @@ Once EII Configuration Management (ia_etcd) service is successfully up, user can
 * Click on the version of the title to select the version of ETCD. The default is V3. Reopening will remember your choice.
 * Right click on the tree node to add or delete.
 * For secure mode, authentication is required. User name and password needs to be entered in the dialogue box.
-* Username is 'root' and default password is located at ETCD_ROOT_PASSWORD key under environment section in [build/provision/dep/docker-compose-provision.override.prod.yml](../build/provision/dep/docker-compose-provision.override.prod.yml).
+* Username is 'root' and default password is located at ETCD_ROOT_PASSWORD key under environment section in [build/provision/dep/docker-compose-provision.override.prod.yml](https://github.com/open-edge-insights/eii-core/blob/master/build/provision/dep/docker-compose-provision.override.prod.yml).
 * This service can accessed from a remote system at address: https://$(HOST_IP):7071 (when EII is running in secure mode). In this case, CA cert has to be imported in the browser. For insecure mode i.e. DEV mode, it can be accessed at http://$(HOST_IP):7071
 
 ![ETCD UI Interface](img/fig_6_3.png)
