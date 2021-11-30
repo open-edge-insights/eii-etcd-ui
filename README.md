@@ -6,21 +6,22 @@ Once EII Configuration Management (ia_etcd) service is successfully up, user can
 * Click on the version of the title to select the version of ETCD. The default is V3. Reopening will remember your choice.
 * Right click on the tree node to add or delete.
 * For secure mode, authentication is required. User name and password needs to be entered in the dialogue box.
-* Username is 'root' and default password is located at ETCD_ROOT_PASSWORD key under environment section in [build/provision/dep/docker-compose-provision.override.prod.yml](https://github.com/open-edge-insights/eii-core/blob/master/build/provision/dep/docker-compose-provision.override.prod.yml).
-* This service can accessed from a remote system at address: https://$(HOST_IP):7071 (when EII is running in secure mode). In this case, CA cert has to be imported in the browser. For insecure mode i.e. DEV mode, it can be accessed at http://$(HOST_IP):7071
+* Username is 'root' and default password is located at ETCD_ROOT_PASSWORD key under environment section in [build/provision/dep/docker-compose-etcd-provision.override.prod.yml](https://github.com/open-edge-insights/eii-core/blob/master/build/provision/dep/docker-compose-etcd-provision.override.prod.yml).
+* This service can accessed from a remote system at address: <https://$(HOST_IP):7071> (when EII is running in secure mode). In this case, CA cert has to be imported in the browser. For insecure mode i.e. DEV mode, it can be accessed at <http://$(HOST_IP):7071>
 
 ![ETCD UI Interface](img/fig_6_3.png)
 
 ---
 **NOTE**:
+
 1. If ETCD_ROOT_PASSWORD is changed, EII must to be provisioned again.
    Please follow below command:
 
     ```sh
-    $ cd [WORKDIR]/IEdgeInsights/build/provision
-    $ sudo -E ./provision.sh <path_to_eii_docker_compose_file>
+    cd [WORKDIR]/IEdgeInsights/build/provision
+    sudo -E ./provision.sh <path_to_eii_docker_compose_file>
 
-    $ # eq. $ sudo -E ./provision.sh ../docker-compose.yml
+    # eq. $ sudo -E ./provision.sh ../docker-compose.yml
     ```
 
 2. Only VideoIngestion and VideoAnalytics based services will have watch for any changes. Any changes done to those
@@ -29,8 +30,9 @@ Once EII Configuration Management (ia_etcd) service is successfully up, user can
    command in working directory build/ to restart EII.
 
     ```sh
-    $ cd [WORKDIR]/IEdgeInsights/build
-    $ docker-compose -f docker-compose-build.yml ia_etcd_ui
-    $ docker-compose up
+    cd [WORKDIR]/IEdgeInsights/build
+    docker-compose -f docker-compose-build.yml ia_etcd_ui
+    docker-compose up
     ```
+
 ---
