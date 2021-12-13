@@ -49,7 +49,6 @@ services:
       AppName: "EtcdUI"
       DEV_MODE: ${DEV_MODE}
       NGINX_PORT: 7071
-      CertType: "pem"
       no_proxy: ${ETCD_HOST}
       ETCD_HOST: ${ETCD_HOST}
       ETCD_CLIENT_PORT: ${ETCD_CLIENT_PORT}
@@ -59,16 +58,12 @@ services:
       - eii
     volumes:
       - "vol_etcd_keeper:/opt/nginx"
+      - ./Certificates/EtcdUI:/run/secrets/EtcdUI
+      - ./Certificates/rootca:/run/secrets/rootca
     ipc: "none"
     ports:
       - 7071:7071
       - 7070:7070
-    secrets:
-      - ca_etcd
-      - etcd_EtcdUI_cert
-      - etcd_EtcdUI_key
-      - etcd_etcduser_cert
-      - etcd_etcduser_key
 
 volumes:
   vol_etcd_keeper:
@@ -77,12 +72,3 @@ volumes:
       type: tmpfs
       device: tmpfs
 
-secrets:
-  etcd_etcduser_cert:
-    file: provision/Certificates/root/root_client_certificate.pem
-  etcd_etcduser_key:
-    file: provision/Certificates/root/root_client_key.pem
-  etcd_EtcdUI_cert:
-    file: provision/Certificates/EtcdUI/EtcdUI_client_certificate.pem
-  etcd_EtcdUI_key:
-    file: provision/Certificates/EtcdUI/EtcdUI_client_key.pem
