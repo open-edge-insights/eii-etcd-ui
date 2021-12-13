@@ -114,9 +114,9 @@ if __name__ == "__main__":
 
         else:
             # Setting cert paths with option to override using env for K8s
-            ca_cert = os.getenv("CONFIGMGR_CACERT", "/run/secrets/ca_etcd")
-            key = os.getenv("CONFIGMGR_KEY", "/run/secrets/etcd_EtcdUI_key")
-            cert = os.getenv("CONFIGMGR_CERT", "/run/secrets/etcd_EtcdUI_cert")
+            ca_cert = os.getenv("CONFIGMGR_CACERT", "/run/secrets/rootca/cacert.pem")
+            key = os.getenv("CONFIGMGR_KEY", "/run/secrets/EtcdUI/EtcdUI_client_key.pem")
+            cert = os.getenv("CONFIGMGR_CERT", "/run/secrets/EtcdUI/EtcdUI_client_certificate.pem")
             subprocess.Popen(["./etcdkeeper/etcdkeeper",
                               "-h", "127.0.0.1",
                               "-p", "7070",
