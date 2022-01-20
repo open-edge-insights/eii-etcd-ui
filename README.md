@@ -6,7 +6,7 @@ Once EII Configuration Management (ia_etcd) service is successfully up, user can
 * Click on the version of the title to select the version of ETCD. The default is V3. Reopening will remember your choice.
 * Right click on the tree node to add or delete.
 * For secure mode, authentication is required. User name and password needs to be entered in the dialogue box.
-* Username is 'root' and default password is located at ETCD_ROOT_PASSWORD key under environment section in [build/provision/dep/docker-compose-etcd-provision.override.prod.yml](https://github.com/open-edge-insights/eii-core/blob/master/build/provision/dep/docker-compose-etcd-provision.override.prod.yml).
+* Username is 'root' and default password is located at ETCDROOT_PASSWORD key under environment section in [docker-compose.yml](https://github.com/open-edge-insights/eii-configmgr-agent/blob/master/docker-compose.yml).
 * This service can accessed from a remote system at address: <https://$(HOST_IP):7071> (when EII is running in secure mode). In this case, CA cert has to be imported in the browser. For insecure mode i.e. DEV mode, it can be accessed at <http://$(HOST_IP):7071>
 
 ![ETCD UI Interface](img/fig_6_3.png)
@@ -14,14 +14,13 @@ Once EII Configuration Management (ia_etcd) service is successfully up, user can
 ---
 **NOTE**:
 
-1. If ETCD_ROOT_PASSWORD is changed, EII must to be provisioned again.
+1. If ETCDROOT_PASSWORD is changed, there must be consolidated docker-compose.yml generated using builder script and EII must to be provisioned again.
    Please follow below command:
 
     ```sh
-    cd [WORKDIR]/IEdgeInsights/build/provision
-    sudo -E ./provision.sh <path_to_eii_docker_compose_file>
-
-    # eq. $ sudo -E ./provision.sh ../docker-compose.yml
+    cd [WORKDIR]/IEdgeInsights/build
+    python3 builder.py -f usecases/<usecase.ml>
+    docker-compose up -d ia_configmgr_agent
     ```
 
 2. Only VideoIngestion and VideoAnalytics based services will have watch for any changes. Any changes done to those
@@ -31,8 +30,8 @@ Once EII Configuration Management (ia_etcd) service is successfully up, user can
 
     ```sh
     cd [WORKDIR]/IEdgeInsights/build
-    docker-compose -f docker-compose-build.yml ia_etcd_ui
-    docker-compose up
+    docker-compose down
+    docker-compose up -d
     ```
 
 ---
