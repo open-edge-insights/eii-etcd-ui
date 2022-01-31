@@ -34,4 +34,5 @@ Once EII Configuration Management (ia_etcd) service is successfully up, user can
     docker-compose up -d
     ```
 
+4. Please follow [pre-requisites for video accelerators](https://github.com/open-edge-insights/eii-core#using-video-accelerators-in-ingestionanalytics-containers) and [pre-requisities for cameras](https://github.com/open-edge-insights/video-ingestion#camera-configuration) before trying to change the config dynamically through ETCD UI.
 ---
