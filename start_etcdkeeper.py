@@ -24,7 +24,6 @@ import sys
 import subprocess
 from distutils.util import strtobool
 import logging
-import subprocess
 import cfgmgr.config_manager as cfg
 from util.util import Util
 import shutil
@@ -87,11 +86,11 @@ if __name__ == "__main__":
                                stdout=outfile, check=False)
             with open("/opt/nginx/eii_nginx.conf", "w") as outfile:
                 subprocess.run(["sed", sed_port,
-                               "/opt/nginx/eii_nginx_temp.conf"],
+                                "/opt/nginx/eii_nginx_temp.conf"],
                                stdout=outfile, check=False)
         except subprocess.CalledProcessError as err:
             print("Subprocess error: {}, {}".format(err.returncode,
-                  err.output))
+                                                    err.output))
     else:
         try:
             with open("/opt/nginx/eii_nginx_temp.conf", "w") as outfile:
@@ -99,11 +98,11 @@ if __name__ == "__main__":
                                stdout=outfile, check=False)
             with open("/opt/nginx/eii_nginx.conf", "w") as outfile:
                 subprocess.run(["sed", sed_port,
-                               "/opt/nginx/eii_nginx_temp.conf"],
+                                "/opt/nginx/eii_nginx_temp.conf"],
                                stdout=outfile, check=False)
         except subprocess.CalledProcessError as err:
             print("Subprocess error: {}, {}".format(err.returncode,
-                  err.output))
+                                                    err.output))
 
     try:
         if devMode:
@@ -114,9 +113,12 @@ if __name__ == "__main__":
 
         else:
             # Setting cert paths with option to override using env for K8s
-            ca_cert = os.getenv("CONFIGMGR_CACERT", "/run/secrets/rootca/cacert.pem")
-            key = os.getenv("CONFIGMGR_KEY", "/run/secrets/EtcdUI/EtcdUI_client_key.pem")
-            cert = os.getenv("CONFIGMGR_CERT", "/run/secrets/EtcdUI/EtcdUI_client_certificate.pem")
+            ca_cert = os.getenv("CONFIGMGR_CACERT", \
+                "/run/secrets/rootca/cacert.pem")
+            key = os.getenv("CONFIGMGR_KEY", \
+                "/run/secrets/EtcdUI/EtcdUI_client_key.pem")
+            cert = os.getenv("CONFIGMGR_CERT", \
+                "/run/secrets/EtcdUI/EtcdUI_client_certificate.pem")
             subprocess.Popen(["./etcdkeeper/etcdkeeper",
                               "-h", "127.0.0.1",
                               "-p", "7070",
