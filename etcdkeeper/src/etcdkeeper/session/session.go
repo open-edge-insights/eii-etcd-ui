@@ -77,13 +77,13 @@ func NewManager(provideName, cookieName string, maxlifetime int64) (*Manager, er
 	return &Manager{provider: provider, cookieName: cookieName, maxlifetime: maxlifetime}, nil
 }
 
-//get Session
+// SessionStart - get Session
 func (manager *Manager) SessionStart(w http.ResponseWriter, r *http.Request) (session Session) {
 	manager.lock.Lock()
 	defer manager.lock.Unlock()
 	cookie, err := r.Cookie(manager.cookieName)
 	if err != nil || cookie.Value == "" {
-		sid := manager.sessionId()
+		sid := manager.sessionID()
 		session, _ = manager.provider.SessionInit(sid)
 		cookie := http.Cookie{Name: manager.cookieName, Value: url.QueryEscape(sid), Path: "/", HttpOnly: true, MaxAge: int(manager.maxlifetime)}
 		http.SetCookie(w, &cookie)
@@ -94,18 +94,18 @@ func (manager *Manager) SessionStart(w http.ResponseWriter, r *http.Request) (se
 	return
 }
 
-//Destroy sessionid
+// SessionDestroy - Destroy sessionid
 func (manager *Manager) SessionDestroy(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie(manager.cookieName)
 	if err != nil || cookie.Value == "" {
 		return
 	} else {
-		manager.lock.Lock()
-		defer manager.lock.Unlock()
-		manager.provider.SessionDestroy(cookie.Value)
-		expiration := time.Now()
-		cookie := http.Cookie{Name: manager.cookieName, Path: "/", HttpOnly: true, Expires: expiration, MaxAge: -1}
-		http.SetCookie(w, &cookie)
+	        manager.lock.Lock()
+	        defer manager.lock.Unlock()
+	        manager.provider.SessionDestroy(cookie.Value)
+	        expiration := time.Now()
+	        cookie := http.Cookie{Name: manager.cookieName, Path: "/", HttpOnly: true, Expires: expiration, MaxAge: -1}
+	        http.SetCookie(w, &cookie)
 	}
 }
 
@@ -116,7 +116,7 @@ func (manager *Manager) GC() {
 	time.AfterFunc(time.Duration(manager.maxlifetime)*time.Second, func() { manager.GC() })
 }
 
-func (manager *Manager) sessionId() string {
+func (manager *Manager) sessionID() string {
 	b := make([]byte, 32)
 	if _, err := io.ReadFull(rand.Reader, b); err != nil {
 		return ""
