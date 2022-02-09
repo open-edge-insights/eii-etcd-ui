@@ -58,8 +58,8 @@ services:
       - eii
     volumes:
       - "vol_etcd_keeper:/opt/nginx"
-      - ./Certificates/EtcdUI:/run/secrets/EtcdUI
-      - ./Certificates/rootca:/run/secrets/rootca
+      - ./Certificates/EtcdUI:/run/secrets/EtcdUI:ro
+      - ./Certificates/rootca/cacert.pem:/run/secrets/rootca/cacert.pem:ro
     ipc: "none"
     ports:
       - 7071:7071
