@@ -47,17 +47,14 @@ RUN cd ./etcdkeeper/src/etcdkeeper \
     && mv etcdkeeper ../../
 
 FROM ubuntu:$UBUNTU_IMAGE_VERSION as runtime
+WORKDIR /app
 
 # Setting python dev env
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends software-properties-common libcjson1 libzmq5 && \
-    add-apt-repository ppa:deadsnakes/ppa && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends python3.8-distutils && \
+    apt-get install -y --no-install-recommends python3-distutils python3-minimal libcjson1 libzmq5 && \
     rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
-
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y --no-install-recommends nginx && \
     rm -rf /var/lib/apt/lists/*
