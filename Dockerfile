@@ -46,12 +46,28 @@ RUN cd ./etcdkeeper/src/etcdkeeper \
     && go build -o etcdkeeper main.go \
     && mv etcdkeeper ../../
 
+ARG CMAKE_INSTALL_PREFIX
+
+# Install cjson
+RUN rm -rf deps && \
+    mkdir -p deps && \
+    cd deps && \
+    wget -q --show-progress https://github.com/DaveGamble/cJSON/archive/v1.7.12.tar.gz -O cjson.tar.gz && \
+    tar xf cjson.tar.gz && \
+    cd cJSON-1.7.12 && \
+    mkdir build && cd build && \
+    cmake -DCMAKE_INSTALL_INCLUDEDIR=${CMAKE_INSTALL_PREFIX}/include -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} .. && \
+    make install
+
+COPY --from=common ${CMAKE_INSTALL_PREFIX}/lib ${CMAKE_INSTALL_PREFIX}/lib
+COPY --from=common ${CMAKE_INSTALL_PREFIX}/include ${CMAKE_INSTALL_PREFIX}/include
+
 FROM ubuntu:$UBUNTU_IMAGE_VERSION as runtime
 WORKDIR /app
 
 # Setting python dev env
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends python3-distutils python3-minimal libcjson1 libzmq5 && \
+    apt-get install -y --no-install-recommends python3-distutils python3-minimal && \
     rm -rf /var/lib/apt/lists/*
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -71,7 +87,8 @@ ARG ARTIFACTS
 ARG CMAKE_INSTALL_PREFIX
 ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:${CMAKE_INSTALL_PREFIX}/lib
 ENV PYTHONPATH $PYTHONPATH:/app/.local/lib/python3.8/site-packages:/app
-COPY --from=common ${CMAKE_INSTALL_PREFIX}/lib ${CMAKE_INSTALL_PREFIX}/lib
+COPY --from=builder ${CMAKE_INSTALL_PREFIX}/lib ${CMAKE_INSTALL_PREFIX}/lib
+COPY --from=builder ${CMAKE_INSTALL_PREFIX}/include ${CMAKE_INSTALL_PREFIX}/include
 COPY --from=common /eii/common/util util
 COPY --from=common /root/.local/lib .local/lib
 COPY --from=builder /app .
