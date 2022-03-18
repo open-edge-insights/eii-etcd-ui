@@ -120,6 +120,8 @@ RUN chown -R ${EII_UID}:${EII_UID} /run/nginx.pid && \
     rm -rf /var/lib/nginx && ln -sf /opt/nginx /var/lib/nginx && \
     rm -f /etc/nginx/sites-enabled/default
 
+RUN apt-get remove --purge -y patch
+
 USER $EII_USER_NAME
 HEALTHCHECK NONE
 ENTRYPOINT ["python3", "start_etcdkeeper.py"]
