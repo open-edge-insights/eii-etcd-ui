@@ -35,7 +35,7 @@ services:
         EII_USER_NAME: ${EII_USER_NAME}
         UBUNTU_IMAGE_VERSION: ${UBUNTU_IMAGE_VERSION}
         CMAKE_INSTALL_PREFIX: ${EII_INSTALL_PATH}
-    read_only: true
+    read_only: false
     image: ${DOCKER_REGISTRY}openedgeinsights/ia_etcd_ui:${EII_VERSION}
     container_name: ia_etcd_ui
     hostname: ia_etcd_ui

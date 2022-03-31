@@ -59,7 +59,14 @@ RUN apt-get update && \
 WORKDIR /app
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends nginx && \
+    apt install -y --no-install-recommends wget build-essential libpcre3 libpcre3-dev zlib1g zlib1g-dev libssl-dev libgd-dev libxml2 libxml2-dev uuid-dev && \
+    wget http://nginx.org/download/nginx-1.18.0.tar.gz && \
+    tar -zxvf nginx-1.18.0.tar.gz && \
+    cd nginx-1.18.0 && \
+    ./configure --prefix=/var/cache/nginx --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --http-log-path=/var/log/nginx/access.log --error-log-path=/var/log/nginx/error.log --with-pcre --lock-path=/var/lock/nginx.lock --pid-path=/var/run/nginx.pid --with-http_ssl_module --with-http_image_filter_module=dynamic --modules-path=/etc/nginx/modules --with-http_v2_module --with-stream=dynamic --with-http_addition_module --with-http_mp4_module --http-client-body-temp-path=client_body_temp --http-proxy-temp-path=proxy_temp --http-fastcgi-temp-path=fastcgi_temp && \
+    make && \
+    make install && \
+    apt -y remove --purge wget build-essential libpcre3-dev zlib1g-dev libssl-dev libgd-dev libxml2-dev uuid-dev && \
     rm -rf /var/lib/apt/lists/*
 
 ARG EII_UID
@@ -68,6 +75,9 @@ RUN groupadd $EII_USER_NAME -g $EII_UID && \
     useradd -r -u $EII_UID -g $EII_USER_NAME $EII_USER_NAME
 
 RUN chown -R ${EII_UID}:${EII_UID} /var/log/nginx/ && \
+    mkdir -p /var/lib/nginx && \ 
+    mkdir -p /var/cache/nginx/client_body_temp /var/cache/nginx/proxy_temp /var/cache/nginx/fastcgi_temp /var/cache/nginx/uwsgi_temp /var/cache/nginx/scgi_temp && \
+    chown -R ${EII_UID}:${EII_UID} /var/cache/nginx && \
     chown -R ${EII_UID}:${EII_UID} /var/lib/nginx/
 
 ARG ARTIFACTS
